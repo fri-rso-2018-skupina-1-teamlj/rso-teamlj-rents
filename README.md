@@ -1,4 +1,4 @@
-# RSO: Orders microservice
+# RSO: Rents microservice
 
 ## Prerequisites
 
