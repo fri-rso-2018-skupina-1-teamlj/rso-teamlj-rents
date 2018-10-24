@@ -1,0 +1,3 @@
+INSERT INTO rents (locationOfRent, locationOfReturn, dateOfRent, dateOfReturn, bike_id, user_id) VALUES ('Parmova cesta 44, 1000 Ljubljana', 'Večna pot 113, 1000 Ljubljana', TIMESTAMP '2018-10-10 11:23:38', TIMESTAMP '2018-10-10 11:55:38', 1, 1);
+INSERT INTO rents (locationOfRent, locationOfReturn, dateOfRent, dateOfReturn, bike_id, user_id) VALUES ('Parmova cesta 44, 1000 Ljubljana', 'Večna pot 113, 1000 Ljubljana', TIMESTAMP '2018-10-11 11:23:38', TIMESTAMP '2018-10-10 11:55:38', 2, 1);
+INSERT INTO rents (locationOfRent, locationOfReturn, dateOfRent, dateOfReturn, bike_id, user_id) VALUES ('Parmova cesta 44, 1000 Ljubljana', 'Večna pot 113, 1000 Ljubljana', TIMESTAMP '2018-10-12 11:23:38', TIMESTAMP '2018-10-10 11:55:38', 3, 1);

@@ -1,0 +1,15 @@
+kumuluzee:
+  name: rso-rents
+  env:
+    name: dev
+  version: 1.0.0
+  server:
+    base-url: http://localhost:8081
+    http:
+      port: 8081
+  datasources:
+    - jndi-name: jdbc/RentsDS
+      connection-url: jdbc:postgresql://localhost:5433/rent
+      username: postgres
+      password: postgres
+      max-pool-size: 20
