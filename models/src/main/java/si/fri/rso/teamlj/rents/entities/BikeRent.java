@@ -19,9 +19,13 @@ public class BikeRent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String locationOfRent;
+    private String latitudeOfRent;
 
-    private String locationOfReturn;
+    private String longitudeOfRent;
+
+    private String latitudeOfReturn;
+
+    private String longitudeOfReturn;
 
     private Instant dateOfRent;
 
@@ -44,20 +48,36 @@ public class BikeRent {
         this.id = id;
     }
 
-    public String getLocationOfRent() {
-        return locationOfRent;
+    public String getLatitudeOfRent() {
+        return latitudeOfRent;
     }
 
-    public void setLocationOfRent(String locationOfRent) {
-        this.locationOfRent = locationOfRent;
+    public void setLatitudeOfRent(String latitudeOfRent) {
+        this.latitudeOfRent = latitudeOfRent;
     }
 
-    public String getLocationOfReturn() {
-        return locationOfReturn;
+    public String getLongitudeOfRent() {
+        return longitudeOfRent;
     }
 
-    public void setLocationOfReturn(String locationOfReturn) {
-        this.locationOfReturn = locationOfReturn;
+    public void setLongitudeOfRent(String longitudeOfRent) {
+        this.longitudeOfRent = longitudeOfRent;
+    }
+
+    public String getLatitudeOfReturn() {
+        return latitudeOfReturn;
+    }
+
+    public void setLatitudeOfReturn(String latitudeOfReturn) {
+        this.latitudeOfReturn = latitudeOfReturn;
+    }
+
+    public String getLongitudeOfReturn() {
+        return longitudeOfReturn;
+    }
+
+    public void setLongitudeOfReturn(String longitudeOfReturn) {
+        this.longitudeOfReturn = longitudeOfReturn;
     }
 
     public Instant getDateOfRent() {

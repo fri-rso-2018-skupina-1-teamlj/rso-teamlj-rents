@@ -149,7 +149,8 @@ public class RentsBean {
 
         Bike b = new Bike();
         b.setId(rent.getBikeId());
-        b.setLocation(rent.getLocationOfReturn());
+        b.setLatitude(rent.getLatitudeOfReturn());
+        b.setLongitude(rent.getLongitudeOfReturn());
 
         /** TODO to ne vem če dela **/
         try {

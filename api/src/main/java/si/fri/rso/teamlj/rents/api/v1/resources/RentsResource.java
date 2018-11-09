@@ -38,8 +38,8 @@ public class RentsResource {
     public Response getSomething() {
 
         BikeRent rent = new BikeRent();
-        rent.setLocationOfRent("Parmova ulica 44, 1000 Ljubljana");
-
+        rent.setLatitudeOfReturn("46.078018");
+        rent.setLongitudeOfReturn("14.496590");
 
         return Response.ok(rent).build();
     }
@@ -61,7 +61,7 @@ public class RentsResource {
     public Response createRent(BikeRent rent) {
 
         /** TODO **/
-        if (rent.getUserId() == null || rent.getUserId().isEmpty() || rent.getBikeId() == null || rent.getBikeId().isEmpty()) {
+        if (rent.getUserId() == null || rent.getBikeId() == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         } else {
             rent = rentsBean.createRent(rent);
@@ -92,9 +92,9 @@ public class RentsResource {
 
     @PATCH
     @Path("{rentId}/return")
-    public Response returnBike(@PathParam("rentId") Integer rentId) {
+    public Response returnBike(@PathParam("rentId") Integer rentId, BikeRent bikeRent) {
 
-        BikeRent rent = rentsBean.returnBike(rentId);
+        BikeRent rent = rentsBean.returnBike(rentId, bikeRent);
 
         if (rent == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
