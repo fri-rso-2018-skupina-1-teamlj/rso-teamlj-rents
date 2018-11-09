@@ -1,0 +1,29 @@
+sudo: required
+
+services:
+- docker
+
+language: java
+dist: trusty
+
+jdk:
+- openjdk8
+
+cache:
+  directories:
+  - $HOME/.m2
+
+env:
+- DOCKER_IMAGE=jp8874/rso-teamlj-rents:1.0
+
+script:
+- mvn clean package -U
+- docker build -t "$DOCKER_IMAGE" .
+
+after_success:
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- docker push "$DOCKER_IMAGE"
+
+branches:
+  only:
+    - master

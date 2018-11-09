@@ -1,9 +1,11 @@
-package si.fri.rso.teamlj.rents.services;
+package si.fri.rso.teamlj.rents.services.beans;
 
+import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.rso.teamlj.rents.dtos.Bike;
 import si.fri.rso.teamlj.rents.entities.BikeRent;
+import si.fri.rso.teamlj.rents.services.configuration.AppProperties;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -19,6 +21,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.UriInfo;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @ApplicationScoped
@@ -28,15 +31,22 @@ public class RentsBean {
 
     private Client httpClient;
 
-    private String baseUrl;
+    //private String baseUrl;
+
+    @Inject
+    @DiscoverService("rso-bikes")
+    private Optional<String> baseUrl;
 
     @Inject
     private EntityManager em;
 
+    @Inject
+    private AppProperties appProperties;
+
     @PostConstruct
     private void init() {
         httpClient = ClientBuilder.newClient();
-        baseUrl = "http://localhost:8082"; // bikes
+        //baseUrl = "http://localhost:8082"; // bikes
     }
 
     public List<BikeRent> getRents(UriInfo uriInfo) {

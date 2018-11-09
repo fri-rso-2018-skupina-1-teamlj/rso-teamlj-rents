@@ -1,7 +1,7 @@
 package si.fri.rso.teamlj.rents.api.v1.resources;
 
 import si.fri.rso.teamlj.rents.entities.BikeRent;
-import si.fri.rso.teamlj.rents.services.RentsBean;
+import si.fri.rso.teamlj.rents.services.beans.RentsBean;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
