@@ -1,7 +1,10 @@
 package si.fri.rso.teamlj.rents.entities;
 
+import si.fri.rso.teamlj.rents.dtos.Bike;
+
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @Entity(name = "rents")
 @NamedQueries(value =
@@ -25,10 +28,13 @@ public class BikeRent {
     private Instant dateOfReturn;
 
     @Column(name = "bike_id")
-    private String bikeId;
+    private Integer bikeId;
 
     @Column(name = "user_id")
-    private String userId;
+    private Integer userId;
+
+    @Transient
+    private List<Bike> bikes;
 
     public Integer getId() {
         return id;
@@ -70,19 +76,27 @@ public class BikeRent {
         this.dateOfReturn = dateOfReturn;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public String getBikeId() {
+    public Integer getBikeId() {
         return bikeId;
     }
 
-    public void setBikeId(String bikeId) {
+    public void setBikeId(Integer bikeId) {
         this.bikeId = bikeId;
+    }
+
+    public List<Bike> getBikes() {
+        return bikes;
+    }
+
+    public void setBikes(List<Bike> bikes) {
+        this.bikes = bikes;
     }
 }
