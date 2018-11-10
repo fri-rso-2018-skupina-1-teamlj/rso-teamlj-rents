@@ -13,18 +13,25 @@
 
     <dependencies>
         <dependency>
-            <groupId>si.fri.rso.teamlj</groupId>
-            <artifactId>rents-models</artifactId>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-cdi-weld</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-cdi-weld</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-jax-rs-jersey</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-json-b-yasson</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-json-p-jsonp</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.kumuluz.ee.rest</groupId>
             <artifactId>kumuluzee-rest-core</artifactId>
@@ -40,7 +47,10 @@
             <artifactId>kumuluzee-discovery-etcd</artifactId>
         </dependency>
 
-
+        <dependency>
+            <groupId>si.fri.rso.teamlj</groupId>
+            <artifactId>rents-models</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

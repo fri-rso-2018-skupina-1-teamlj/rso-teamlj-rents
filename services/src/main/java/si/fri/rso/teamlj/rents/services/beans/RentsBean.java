@@ -70,6 +70,14 @@ public class RentsBean {
         return rent;
     }
 
+    public List<BikeRent> getRentsFilter(UriInfo uriInfo) {
+
+        QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery()).defaultOffset(0)
+                .build();
+
+        return JPAUtils.queryEntities(em, BikeRent.class, queryParameters);
+    }
+
     public BikeRent createRent(BikeRent rent) {
 
         try {
@@ -88,6 +96,7 @@ public class RentsBean {
         BikeRent r = em.find(BikeRent.class, rentId);
 
         if (r == null) {
+            log.warning("rent is null");
             return null;
         }
 
@@ -103,21 +112,33 @@ public class RentsBean {
         return rent;
     }
 
-    public BikeRent rentBike(Integer rentId, BikeRent bikeReturn) {
+    public BikeRent rentABike(Integer userId, Integer bikeId) {
 
-        BikeRent rent = em.find(BikeRent.class, rentId);
+        /** TODO :
+         * - preveri, če user exist
+         * - preveri, če bike exist
+         * - posodobi lokacijo kolesa
+         * - preveri če je bike res free
+         */
 
-        if (rent == null) {
-            throw new NotFoundException();
-        }
+
+        BikeRent rent = new BikeRent();
 
         try {
             beginTx();
             /** nastavimo datum in čas izposoje kolesa
-             *  posodobimo novo lokacijo kolesa
+             *  nastavimo lokacijo izposoje
+             *  nastavimo userId
+             *  nastavimo bikeId
+             *
              */
             rent.setDateOfRent(Instant.now());
-            rent = em.merge(bikeReturn);
+            rent.setLongitudeOfRent("TODO");
+            rent.setLatitudeOfRent("TODO");
+            rent.setUserId(userId);
+            rent.setBikeId(bikeId);
+
+            em.persist(rent);
             commitTx();
         } catch (Exception e) {
             rollbackTx();
@@ -125,7 +146,9 @@ public class RentsBean {
 
         try {
             httpClient
-                    .target(baseUrl + "/v1/bikes/" + rent.getBikeId() + "/taken")
+                    //TODO popravi tole
+                    //.target(baseUrl.get() + "/v1/bikes/" + rent.getBikeId() + "/taken")
+                    .target("http://localhost:8082/v1/bikes/" + bikeId + "/taken")
                     .request()
                     .build("PATCH", Entity.json(""))
                     .invoke();
@@ -137,9 +160,9 @@ public class RentsBean {
         return rent;
     }
 
-    public BikeRent returnBike(Integer rentId, BikeRent bikeReturn) {
+    public BikeRent returnBike(Integer userId, Integer rentId) {
 
-        BikeRent rent = em.find(BikeRent.class, rentId);
+        BikeRent rent = getRent(rentId);
 
         if (rent == null) {
             throw new NotFoundException();
@@ -151,7 +174,10 @@ public class RentsBean {
              *  posodobimo novo lokacijo kolesa
              */
             rent.setDateOfReturn(Instant.now());
-            rent = em.merge(bikeReturn);
+            rent.setLongitudeOfReturn("TODO");
+            rent.setLatitudeOfReturn("TODO");
+
+
             commitTx();
         } catch (Exception e) {
             rollbackTx();
@@ -161,11 +187,11 @@ public class RentsBean {
         b.setId(rent.getBikeId());
         b.setLatitude(rent.getLatitudeOfReturn());
         b.setLongitude(rent.getLongitudeOfReturn());
+        b.setStatus("free");
 
-        /** TODO to ne vem če dela **/
         try {
             httpClient
-                    .target(baseUrl + "/v1/bikes/" + rent.getBikeId() + "/free")
+                    .target("http://localhost:8082/v1/bikes/" + rent.getBikeId() + "/free")
                     .request()
                     .build("PUT", Entity.json(b))
                     .invoke();
@@ -177,7 +203,7 @@ public class RentsBean {
         return rent;
     }
 
-    public boolean deleteRent(String rentId) {
+    public boolean deleteRent(Integer rentId) {
 
         BikeRent rent = em.find(BikeRent.class, rentId);
 

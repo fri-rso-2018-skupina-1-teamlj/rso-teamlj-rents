@@ -23,6 +23,7 @@
 
         <kumuluzee.version>3.0.0</kumuluzee.version>
         <kumuluzee-rest.version>1.2.3</kumuluzee-rest.version>
+        <kumuluzee-config.version>1.1.0</kumuluzee-config.version>
         <kumuluzee-discovery.version>1.1.0</kumuluzee-discovery.version>
 
         <postgresql.version>42.2.5</postgresql.version>

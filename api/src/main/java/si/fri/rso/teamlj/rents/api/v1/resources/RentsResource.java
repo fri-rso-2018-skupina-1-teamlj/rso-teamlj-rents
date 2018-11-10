@@ -1,10 +1,12 @@
 package si.fri.rso.teamlj.rents.api.v1.resources;
 
+import si.fri.rso.teamlj.rents.dtos.Bike;
 import si.fri.rso.teamlj.rents.entities.BikeRent;
 import si.fri.rso.teamlj.rents.services.beans.RentsBean;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -57,6 +59,17 @@ public class RentsResource {
         return Response.status(Response.Status.OK).entity(rent).build();
     }
 
+    @GET
+    @Path("/filtered")
+    public Response getUsersFiltered() {
+
+        List<BikeRent> rents;
+
+        rents = rentsBean.getRentsFilter(uriInfo);
+
+        return Response.status(Response.Status.OK).entity(rents).build();
+    }
+
     @POST
     public Response createRent(BikeRent rent) {
 
@@ -74,8 +87,37 @@ public class RentsResource {
         }
     }
 
+    @POST
+    @Path("/rentabike/{userId}/{bikeId}")
+    public Response rentABike(@PathParam("userId") Integer userId, @PathParam("bikeId") Integer bikeId) {
+
+        BikeRent rent = rentsBean.rentABike(userId, bikeId);
+
+        if (rent.getId() != null) {
+            return Response.status(Response.Status.CREATED).entity(rent).build();
+        } else {
+            return Response.status(Response.Status.CONFLICT).entity(rent).build();
+        }
+    }
+
     @PUT
-    @Path("{rentId}")
+    @Path("/returnabike/{userId}/{rentId}")
+    public Response returnBike(@PathParam("userId") Integer userId, @PathParam("rentId") Integer rentId) {
+
+        BikeRent rent = rentsBean.returnBike(userId, rentId);
+
+        if (rent == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } else {
+            if (rent.getId() != null)
+                return Response.status(Response.Status.OK).entity(rent).build();
+            else
+                return Response.status(Response.Status.NOT_MODIFIED).build();
+        }
+    }
+
+    @PUT
+    @Path("/{rentId}")
     public Response putRent(@PathParam("rentId") Integer rentId, BikeRent rent) {
 
         rent = rentsBean.putRent(rentId, rent);
@@ -90,25 +132,9 @@ public class RentsResource {
         }
     }
 
-    @PATCH
-    @Path("{rentId}/return")
-    public Response returnBike(@PathParam("rentId") Integer rentId, BikeRent bikeRent) {
-
-        BikeRent rent = rentsBean.returnBike(rentId, bikeRent);
-
-        if (rent == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } else {
-            if (rent.getId() != null)
-                return Response.status(Response.Status.OK).entity(rent).build();
-            else
-                return Response.status(Response.Status.NOT_MODIFIED).build();
-        }
-    }
-
     @DELETE
-    @Path("{rentId}")
-    public Response deleteRent(@PathParam("rentId") String rentId) {
+    @Path("/{rentId}")
+    public Response deleteRent(@PathParam("rentId") Integer rentId) {
 
         boolean deleted = rentsBean.deleteRent(rentId);
 
