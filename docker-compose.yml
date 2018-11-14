@@ -1,19 +1,19 @@
 version: "3"
 services:
   postgres:
-    image: postgres:10.5
+    image: postgres:latest
     ports:
     - 5433:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: rents
-  rso-customers:
+      POSTGRES_DB: userTable
+  rso-rents:
     image: jp8874/rso-teamlj-rents:1.0
     ports:
     - 8081:8081
     environment:
-      KUMULUZEE_DATASOURCES0_CONNECTIONURL: jdbc:postgresql://postgres:5432/rents
+      KUMULUZEE_DATASOURCES0_CONNECTIONURL: jdbc:postgresql://postgresR:5433/rent
       KUMULUZEE_CONFIG_ETCD_HOSTS: http://etcd:2379
       KUMULUZEE_DISCOVERY_ETCD_HOSTS: http://etcd:2379
     depends_on:

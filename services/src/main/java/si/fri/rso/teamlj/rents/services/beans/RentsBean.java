@@ -147,8 +147,8 @@ public class RentsBean {
         try {
             httpClient
                     //TODO popravi tole
-                    //.target(baseUrl.get() + "/v1/bikes/" + rent.getBikeId() + "/taken")
-                    .target("http://localhost:8082/v1/bikes/" + bikeId + "/taken")
+                    .target(baseUrl.get() + "/v1/bikes/" + bikeId + "/taken")
+                    //.target("http://localhost:8082/v1/bikes/" + bikeId + "/taken")
                     .request()
                     .build("PATCH", Entity.json(""))
                     .invoke();
@@ -191,7 +191,9 @@ public class RentsBean {
 
         try {
             httpClient
-                    .target("http://localhost:8082/v1/bikes/" + rent.getBikeId() + "/free")
+                    //TODO
+                    .target(baseUrl.get() + "/v1/bikes/" + rent.getBikeId() + "/free")
+                    //.target("http://localhost:8082/v1/bikes/" + rent.getBikeId() + "/free")
                     .request()
                     .build("PUT", Entity.json(b))
                     .invoke();
