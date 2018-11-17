@@ -46,12 +46,6 @@
             </dependency>
 
             <dependency>
-                <artifactId>kumuluzee-config-etcd</artifactId>
-                <groupId>com.kumuluz.ee.config</groupId>
-                <version>${kumuluzee-config.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.kumuluz.ee.discovery</groupId>
                 <artifactId>kumuluzee-discovery-etcd</artifactId>
                 <version>${kumuluzee-discovery.version}</version>
