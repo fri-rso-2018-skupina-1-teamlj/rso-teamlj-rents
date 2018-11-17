@@ -7,28 +7,14 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: userTable
+      POSTGRES_DB: rent
   rso-rents:
-    image: jp8874/rso-teamlj-rents:1.0
+    image: jp8874/rso-teamlj-rents:1.1
     ports:
     - 8081:8081
     environment:
-      KUMULUZEE_DATASOURCES0_CONNECTIONURL: jdbc:postgresql://postgresR:5433/rent
-      KUMULUZEE_CONFIG_ETCD_HOSTS: http://etcd:2379
-      KUMULUZEE_DISCOVERY_ETCD_HOSTS: http://etcd:2379
+      KUMULUZEE_DATASOURCES0_CONNECTIONURL: jdbc:postgresql://172.17.0.1:5433/rent
+      KUMULUZEE_DISCOVERY_ETCD_HOSTS: http://172.17.0.1:2379
     depends_on:
     - postgres
-    - etcd
-  etcd:
-    image: quay.io/coreos/etcd:latest
-    ports:
-    - "2379:2379"
-    command: >-
-      /usr/local/bin/etcd
-      -name node1
-      -advertise-client-urls http://etcd:2379
-      -listen-client-urls http://0.0.0.0:2379
-      -initial-advertise-peer-urls http://etcd:2380
-      -listen-peer-urls http://0.0.0.0:2380
-      -initial-cluster node1=http://etcd:2380
-      -cors="*"
+

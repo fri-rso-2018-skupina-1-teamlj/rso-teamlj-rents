@@ -14,7 +14,7 @@ cache:
   - $HOME/.m2
 
 env:
-- DOCKER_IMAGE=jp8874/rso-teamlj-rents:1.0
+- DOCKER_IMAGE=jp8874/rso-teamlj-rents:1.1
 
 script:
 - mvn clean package -U

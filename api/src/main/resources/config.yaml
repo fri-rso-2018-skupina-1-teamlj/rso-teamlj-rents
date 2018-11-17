@@ -13,12 +13,6 @@ kumuluzee:
       username: postgres
       password: postgres
       max-pool-size: 20
-  config:
-    etcd:
-      hosts: http://localhost:2379
-    discovery:
+  discovery:
       etcd:
         hosts: http://localhost:2379
-  app-properties:
-    external-services:
-      enabled: false
