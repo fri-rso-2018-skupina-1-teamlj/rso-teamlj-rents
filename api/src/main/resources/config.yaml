@@ -19,3 +19,7 @@ kumuluzee:
   discovery:
       etcd:
         hosts: http://localhost:2379
+  metrics:
+    web-instrumentation:
+    - name: rent-endpoint
+      url-pattern: /v1/rents/*

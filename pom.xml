@@ -23,8 +23,8 @@
 
         <kumuluzee.version>3.0.0</kumuluzee.version>
         <kumuluzee-rest.version>1.2.3</kumuluzee-rest.version>
-        <kumuluzee-config.version>1.1.0</kumuluzee-config.version>
         <kumuluzee-discovery.version>1.1.0</kumuluzee-discovery.version>
+        <kumuluzee-metrics.version>1.1.1</kumuluzee-metrics.version>
 
         <postgresql.version>42.2.5</postgresql.version>
     </properties>
@@ -50,7 +50,13 @@
                 <artifactId>kumuluzee-discovery-etcd</artifactId>
                 <version>${kumuluzee-discovery.version}</version>
             </dependency>
-
+			
+			<dependency>
+                <groupId>com.kumuluz.ee.metrics</groupId>
+                <artifactId>kumuluzee-metrics-core</artifactId>
+                <version>${kumuluzee-metrics.version}</version>
+            </dependency>
+            
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>

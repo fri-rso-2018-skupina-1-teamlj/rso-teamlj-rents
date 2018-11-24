@@ -7,6 +7,8 @@ import si.fri.rso.teamlj.rents.dtos.Bike;
 import si.fri.rso.teamlj.rents.entities.BikeRent;
 import si.fri.rso.teamlj.rents.services.configuration.AppProperties;
 
+import org.eclipse.microprofile.metrics.annotation.Timed;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -48,7 +50,8 @@ public class RentsBean {
         httpClient = ClientBuilder.newClient();
         //baseUrl = "http://localhost:8082"; // bikes
     }
-
+	
+	@Timed
     public List<BikeRent> getRents(UriInfo uriInfo) {
 
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery())
