@@ -9,9 +9,12 @@ kumuluzee:
       port: 8081
   datasources:
     - jndi-name: jdbc/RentsDS
-      connection-url: jdbc:postgresql://localhost:5433/rent
-      username: postgres
-      password: postgres
+      connection-url: jdbc:postgresql://35.228.47.159:5433/rent
+      username: rso
+      password: rso
+      #connection-url: jdbc:postgresql://localhost:5433/rent
+      #username: postgres
+      #password: postgres
       max-pool-size: 20
   discovery:
       etcd:

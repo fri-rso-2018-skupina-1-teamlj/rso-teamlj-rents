@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rents-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rents
+  template:
+    metadata:
+      labels:
+        app: rents
+    spec:
+      containers:
+      - name: rents
+        image: jp8874/rso-teamlj-rents:1.1
+        env:
+          - name: KUMULUZEE_DISCOVERY_CLUSTER
+            value: gcloud
+          - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
+            value: http://etcd:2379
+          - name: KUMULUZEE_CONFIG_ETCD_HOSTS
+            value: http://etcd:2379
+        ports:
+        - containerPort: 8081
+          name: server
+          protocol: TCP
