@@ -48,7 +48,7 @@ public class RentsBean {
     @PostConstruct
     private void init() {
         httpClient = ClientBuilder.newClient();
-        //baseUrl = "http://localhost:8082"; // bikes
+        //baseUrl = "http://localhost:8081"; // rents
     }
 	
 	@Timed

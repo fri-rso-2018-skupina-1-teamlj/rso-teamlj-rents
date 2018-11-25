@@ -23,3 +23,7 @@ kumuluzee:
     web-instrumentation:
     - name: rent-endpoint
       url-pattern: /v1/rents/*
+  health:
+    checks:
+      data-source-health-check:
+        jndi-name: jdbc/RentsDS
