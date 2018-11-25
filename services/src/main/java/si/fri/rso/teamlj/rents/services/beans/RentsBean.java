@@ -4,6 +4,7 @@ import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
 import si.fri.rso.teamlj.rents.dtos.Bike;
+import si.fri.rso.teamlj.rents.dtos.MapEntity;
 import si.fri.rso.teamlj.rents.entities.BikeRent;
 import si.fri.rso.teamlj.rents.services.configuration.AppProperties;
 
@@ -20,6 +21,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
 import java.time.Instant;
 import java.util.List;
@@ -38,6 +40,10 @@ public class RentsBean {
     @Inject
     @DiscoverService("rso-bikes")
     private Optional<String> baseUrl;
+
+    @Inject
+    @DiscoverService("rso-map")
+    private Optional<String> baseUrlMap;
 
     @Inject
     private EntityManager em;
@@ -124,34 +130,63 @@ public class RentsBean {
          * - preveri če je bike res free
          */
 
-
-        BikeRent rent = new BikeRent();
+        BikeRent rent = createRent(new BikeRent());
+        Bike bike = getBike(bikeId);
 
         try {
             beginTx();
-            /** nastavimo datum in čas izposoje kolesa
-             *  nastavimo lokacijo izposoje
-             *  nastavimo userId
-             *  nastavimo bikeId
-             *
-             */
+
             rent.setDateOfRent(Instant.now());
-            rent.setLongitudeOfRent("TODO");
-            rent.setLatitudeOfRent("TODO");
+            rent.setLongitudeOfRent(bike.getLatitude());
+            rent.setLatitudeOfRent(bike.getLongitude());
             rent.setUserId(userId);
             rent.setBikeId(bikeId);
 
-            em.persist(rent);
             commitTx();
         } catch (Exception e) {
             rollbackTx();
         }
 
+        takeBike(bikeId);
+
+        return rent;
+    }
+
+    public Bike getBike(Integer bikeId) {
+        try {
+            return httpClient
+//                    .target(baseUrl.get() + "/v1/bikes/" + bikeId)
+                    .target("http://localhost:8082/v1/bikes/" + bikeId)
+                    .request().get(new GenericType<Bike>() {
+                    });
+        } catch (WebApplicationException | ProcessingException e) {
+            log.severe(e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+    }
+
+    public MapEntity getMap(Integer mapId) {
+
+        try {
+            return httpClient
+//                    .target(baseUrlMap.get() + "/v1/map/" + mapId)
+                    .target("http://localhost:8084/v1/map/" + mapId)
+                    .request().get(new GenericType<MapEntity>() {
+                    });
+        } catch (WebApplicationException | ProcessingException e) {
+            log.severe(e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+
+    }
+
+    public void takeBike(Integer bikeId) {
+
         try {
             httpClient
                     //TODO popravi tole
-                    .target(baseUrl.get() + "/v1/bikes/" + bikeId + "/taken")
-                    //.target("http://localhost:8082/v1/bikes/" + bikeId + "/taken")
+//                    .target(baseUrl.get() + "/v1/bikes/" + bikeId + "/taken")
+                    .target("http://localhost:8082/v1/bikes/" + bikeId + "/taken")
                     .request()
                     .build("PATCH", Entity.json(""))
                     .invoke();
@@ -160,12 +195,14 @@ public class RentsBean {
             throw new InternalServerErrorException(e);
         }
 
-        return rent;
     }
 
-    public BikeRent returnBike(Integer userId, Integer rentId) {
+    public BikeRent returnBike(Integer userId, Integer rentId, Integer mapId) {
 
         BikeRent rent = getRent(rentId);
+
+        Integer bikeId = rent.getBikeId();
+        MapEntity mapEntity = getMap(mapId);
 
         if (rent == null) {
             throw new NotFoundException();
@@ -177,10 +214,10 @@ public class RentsBean {
              *  posodobimo novo lokacijo kolesa
              */
             rent.setDateOfReturn(Instant.now());
-            rent.setLongitudeOfReturn("TODO");
-            rent.setLatitudeOfReturn("TODO");
+            rent.setLongitudeOfReturn(mapEntity.getLatitude());
+            rent.setLatitudeOfReturn(mapEntity.getLongitude());
 
-
+            em.merge(rent);
             commitTx();
         } catch (Exception e) {
             rollbackTx();
@@ -191,21 +228,30 @@ public class RentsBean {
         b.setLatitude(rent.getLatitudeOfReturn());
         b.setLongitude(rent.getLongitudeOfReturn());
         b.setStatus("free");
+        b.setMapId(mapId);
+
+        returnBike(b, mapEntity.getLatitude(), mapEntity.getLongitude());
+
+        return rent;
+    }
+
+    public void returnBike(Bike bike, float latitude, float longitude) {
+
 
         try {
             httpClient
                     //TODO
-                    .target(baseUrl.get() + "/v1/bikes/" + rent.getBikeId() + "/free")
-                    //.target("http://localhost:8082/v1/bikes/" + rent.getBikeId() + "/free")
+//                    .target(baseUrl.get() + "/v1/bikes/" + bike.getId() + "/free/" + latitude + "&" + longitude)
+                    .target("http://localhost:8082/v1/bikes/" + bike.getId() + "/free/" + latitude + "&" + longitude)
                     .request()
-                    .build("PUT", Entity.json(b))
+                    .build("PUT", Entity.json(bike))
                     .invoke();
         } catch (WebApplicationException | ProcessingException e) {
             log.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
 
-        return rent;
+
     }
 
     public boolean deleteRent(Integer rentId) {

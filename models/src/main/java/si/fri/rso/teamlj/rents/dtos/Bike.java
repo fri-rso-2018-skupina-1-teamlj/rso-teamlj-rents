@@ -2,12 +2,13 @@ package si.fri.rso.teamlj.rents.dtos;
 
 public class Bike {
 
-
     private Integer id;
 
-    private String longitude;
+    private float latitude;
 
-    private String latitude;
+    private float longitude;
+
+    private Integer mapId;
 
     private String status;
 
@@ -19,20 +20,28 @@ public class Bike {
         this.id = id;
     }
 
-    public String getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(float longitude) {
         this.longitude = longitude;
+    }
+
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(Integer mapId) {
+        this.mapId = mapId;
     }
 
     public String getStatus() {

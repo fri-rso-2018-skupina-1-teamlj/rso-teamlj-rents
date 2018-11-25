@@ -40,8 +40,8 @@ public class RentsResource {
     public Response getSomething() {
 
         BikeRent rent = new BikeRent();
-        rent.setLatitudeOfReturn("46.078018");
-        rent.setLongitudeOfReturn("14.496590");
+        rent.setLatitudeOfReturn((float) 46.050242);
+        rent.setLongitudeOfReturn((float) 14.4691958);
 
         return Response.ok(rent).build();
     }
@@ -73,7 +73,7 @@ public class RentsResource {
     @POST
     public Response createRent(BikeRent rent) {
 
-        /** TODO **/
+        /** TODO **/ // TODO - kaj je s tem mišljeno, meni zgleda vse ok?
         if (rent.getUserId() == null || rent.getBikeId() == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         } else {
@@ -100,11 +100,12 @@ public class RentsResource {
         }
     }
 
+    // TODO - razmisli, če ne bi tukaj raje dali bike kot param
     @PUT
-    @Path("/returnabike/{userId}/{rentId}")
-    public Response returnBike(@PathParam("userId") Integer userId, @PathParam("rentId") Integer rentId) {
+    @Path("/returnabike/{userId}/{rentId}/{mapId}")
+    public Response returnBike(@PathParam("userId") Integer userId, @PathParam("rentId") Integer rentId, @PathParam("rentId") Integer mapId) {
 
-        BikeRent rent = rentsBean.returnBike(userId, rentId);
+        BikeRent rent = rentsBean.returnBike(userId, rentId, mapId);
 
         if (rent == null) {
             return Response.status(Response.Status.NOT_FOUND).build();

@@ -19,13 +19,13 @@ public class BikeRent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String latitudeOfRent;
+    private float latitudeOfRent;
 
-    private String longitudeOfRent;
+    private float longitudeOfRent;
 
-    private String latitudeOfReturn;
+    private float latitudeOfReturn;
 
-    private String longitudeOfReturn;
+    private float longitudeOfReturn;
 
     private Instant dateOfRent;
 
@@ -48,35 +48,35 @@ public class BikeRent {
         this.id = id;
     }
 
-    public String getLatitudeOfRent() {
+    public float getLatitudeOfRent() {
         return latitudeOfRent;
     }
 
-    public void setLatitudeOfRent(String latitudeOfRent) {
+    public void setLatitudeOfRent(float latitudeOfRent) {
         this.latitudeOfRent = latitudeOfRent;
     }
 
-    public String getLongitudeOfRent() {
+    public float getLongitudeOfRent() {
         return longitudeOfRent;
     }
 
-    public void setLongitudeOfRent(String longitudeOfRent) {
+    public void setLongitudeOfRent(float longitudeOfRent) {
         this.longitudeOfRent = longitudeOfRent;
     }
 
-    public String getLatitudeOfReturn() {
+    public float getLatitudeOfReturn() {
         return latitudeOfReturn;
     }
 
-    public void setLatitudeOfReturn(String latitudeOfReturn) {
+    public void setLatitudeOfReturn(float latitudeOfReturn) {
         this.latitudeOfReturn = latitudeOfReturn;
     }
 
-    public String getLongitudeOfReturn() {
+    public float getLongitudeOfReturn() {
         return longitudeOfReturn;
     }
 
-    public void setLongitudeOfReturn(String longitudeOfReturn) {
+    public void setLongitudeOfReturn(float longitudeOfReturn) {
         this.longitudeOfReturn = longitudeOfReturn;
     }
 
@@ -96,20 +96,20 @@ public class BikeRent {
         this.dateOfReturn = dateOfReturn;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
     public Integer getBikeId() {
         return bikeId;
     }
 
     public void setBikeId(Integer bikeId) {
         this.bikeId = bikeId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public List<Bike> getBikes() {
