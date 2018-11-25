@@ -155,8 +155,8 @@ public class RentsBean {
     public Bike getBike(Integer bikeId) {
         try {
             return httpClient
-//                    .target(baseUrl.get() + "/v1/bikes/" + bikeId)
-                    .target("http://localhost:8082/v1/bikes/" + bikeId)
+                    .target(baseUrl.get() + "/v1/bikes/" + bikeId)
+//                    .target("http://localhost:8082/v1/bikes/" + bikeId)
                     .request().get(new GenericType<Bike>() {
                     });
         } catch (WebApplicationException | ProcessingException e) {
@@ -169,8 +169,8 @@ public class RentsBean {
 
         try {
             return httpClient
-//                    .target(baseUrlMap.get() + "/v1/map/" + mapId)
-                    .target("http://localhost:8084/v1/map/" + mapId)
+                    .target(baseUrlMap.get() + "/v1/map/" + mapId)
+//                    .target("http://localhost:8084/v1/map/" + mapId)
                     .request().get(new GenericType<MapEntity>() {
                     });
         } catch (WebApplicationException | ProcessingException e) {
@@ -185,8 +185,8 @@ public class RentsBean {
         try {
             httpClient
                     //TODO popravi tole
-//                    .target(baseUrl.get() + "/v1/bikes/" + bikeId + "/taken")
-                    .target("http://localhost:8082/v1/bikes/" + bikeId + "/taken")
+                    .target(baseUrl.get() + "/v1/bikes/" + bikeId + "/taken")
+//                    .target("http://localhost:8082/v1/bikes/" + bikeId + "/taken")
                     .request()
                     .build("PATCH", Entity.json(""))
                     .invoke();
@@ -241,8 +241,8 @@ public class RentsBean {
         try {
             httpClient
                     //TODO
-//                    .target(baseUrl.get() + "/v1/bikes/" + bike.getId() + "/free/" + latitude + "&" + longitude)
-                    .target("http://localhost:8082/v1/bikes/" + bike.getId() + "/free/" + latitude + "&" + longitude)
+                    .target(baseUrl.get() + "/v1/bikes/" + bike.getId() + "/free/" + latitude + "&" + longitude)
+//                    .target("http://localhost:8082/v1/bikes/" + bike.getId() + "/free/" + latitude + "&" + longitude)
                     .request()
                     .build("PUT", Entity.json(bike))
                     .invoke();
