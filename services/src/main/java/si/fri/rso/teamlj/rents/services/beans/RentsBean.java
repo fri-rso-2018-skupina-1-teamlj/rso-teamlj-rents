@@ -137,8 +137,8 @@ public class RentsBean {
             beginTx();
 
             rent.setDateOfRent(Instant.now());
-            rent.setLongitudeOfRent(bike.getLatitude());
-            rent.setLatitudeOfRent(bike.getLongitude());
+            rent.setLongitudeOfRent(bike.getLongitude());
+            rent.setLatitudeOfRent(bike.getLatitude());
             rent.setUserId(userId);
             rent.setBikeId(bikeId);
 
