@@ -61,7 +61,7 @@ public class RentsResource {
 
     @GET
     @Path("/filtered")
-    public Response getUsersFiltered() {
+    public Response getRentsFiltered() {
 
         List<BikeRent> rents;
 
