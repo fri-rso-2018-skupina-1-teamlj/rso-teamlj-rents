@@ -27,3 +27,27 @@ kumuluzee:
     checks:
       data-source-health-check:
         jndi-name: jdbc/RentsDS
+      disk-space-health-check:
+        threshold: 100000000
+        etcd-health-check:
+          connection-url: http://localhost:2379/health
+  logs:
+    config-file: '<?xml version="1.0" encoding="UTF-8"?>
+                        <Configuration name="rents">
+                            <Appenders>
+                                <Console name="console" target="SYSTEM_OUT">
+                                    <PatternLayout pattern="%d %p %marker %m %X %ex %n"/>
+                                </Console>
+                                <Socket name="logstash" host="5d872f8f-f02a-4f15-b966-e8796ff99a28-ls.logit.io"
+                                port="13221" protocol="tcp">
+                                    <JSONLayout complete="false" compact="true" eventEol="true" charset="UTF-8" properties="true"/>
+                                </Socket>
+                            </Appenders>
+                            <Loggers>
+                                <!-- Default logger -->
+                                <Root level="all">
+                                    <AppenderRef ref="console" level="info"/>
+                                    <AppenderRef ref="logstash" level="trace"/>
+                                </Root>
+                            </Loggers>
+                        </Configuration>'

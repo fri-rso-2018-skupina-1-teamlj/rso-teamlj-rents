@@ -1,5 +1,6 @@
 package si.fri.rso.teamlj.rents.api.v1.resources;
 
+import com.kumuluz.ee.logs.cdi.Log;
 import si.fri.rso.teamlj.rents.dtos.Bike;
 import si.fri.rso.teamlj.rents.entities.BikeRent;
 import si.fri.rso.teamlj.rents.services.beans.RentsBean;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @ApplicationScoped
 @Path("/rents")
+@Log
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class RentsResource {
@@ -100,7 +102,6 @@ public class RentsResource {
         }
     }
 
-    // TODO - razmisli, če ne bi tukaj raje dali bike kot param
     @PUT
     @Path("/returnabike/{userId}/{rentId}/{mapId}")
     public Response returnBike(@PathParam("userId") Integer userId, @PathParam("rentId") Integer rentId, @PathParam("rentId") Integer mapId) {

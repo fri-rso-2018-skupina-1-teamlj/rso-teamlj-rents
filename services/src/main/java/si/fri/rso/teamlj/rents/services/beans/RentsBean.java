@@ -3,6 +3,10 @@ package si.fri.rso.teamlj.rents.services.beans;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
+import org.eclipse.microprofile.metrics.annotation.Counted;
 import si.fri.rso.teamlj.rents.dtos.Bike;
 import si.fri.rso.teamlj.rents.dtos.MapEntity;
 import si.fri.rso.teamlj.rents.entities.BikeRent;
@@ -24,6 +28,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.UriInfo;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -56,8 +62,12 @@ public class RentsBean {
         httpClient = ClientBuilder.newClient();
         //baseUrl = "http://localhost:8081"; // rents
     }
-	
-	@Timed
+
+    @Timed(name = "get_rents_timed")
+    @Counted(name = "get_rents_counter")
+    @CircuitBreaker(requestVolumeThreshold = 3)
+    @Timeout(value = 2, unit = ChronoUnit.SECONDS)
+    @Fallback(fallbackMethod = "getRentsFallback")
     public List<BikeRent> getRents(UriInfo uriInfo) {
 
         QueryParameters queryParameters = QueryParameters.query(uriInfo.getRequestUri().getQuery())
@@ -68,6 +78,18 @@ public class RentsBean {
 
     }
 
+    public List<BikeRent> getRentsFallback(UriInfo uriInfo) {
+
+        log.warning("get rents fallback called");
+        return Collections.emptyList();
+
+    }
+
+    @Timed(name = "get_rent_timed")
+    @Counted(name = "get_rent_counter")
+    @CircuitBreaker(requestVolumeThreshold = 3)
+    @Timeout(value = 2, unit = ChronoUnit.SECONDS)
+    @Fallback(fallbackMethod = "getRentFallback")
     public BikeRent getRent(Integer rentId) {
 
         BikeRent rent = em.find(BikeRent.class, rentId);
@@ -77,6 +99,12 @@ public class RentsBean {
         }
 
         return rent;
+    }
+
+    public BikeRent getRentFallback(Integer rentId) {
+
+        log.warning("get rent fallback called");
+        return new BikeRent();
     }
 
     public List<BikeRent> getRentsFilter(UriInfo uriInfo) {
@@ -123,15 +151,13 @@ public class RentsBean {
 
     public BikeRent rentABike(Integer userId, Integer bikeId) {
 
-        /** TODO :
-         * - preveri, če user exist
-         * - preveri, če bike exist
-         * - posodobi lokacijo kolesa
-         * - preveri če je bike res free
-         */
+        Bike bike = getBike(bikeId);
+
+        if (bike.getStatus().equals("taken")) {
+            return null;
+        }
 
         BikeRent rent = createRent(new BikeRent());
-        Bike bike = getBike(bikeId);
 
         try {
             beginTx();
@@ -184,7 +210,6 @@ public class RentsBean {
 
         try {
             httpClient
-                    //TODO popravi tole
                     .target(baseUrl.get() + "/v1/bikes/" + bikeId + "/taken")
 //                    .target("http://localhost:8082/v1/bikes/" + bikeId + "/taken")
                     .request()
@@ -201,12 +226,17 @@ public class RentsBean {
 
         BikeRent rent = getRent(rentId);
 
-        Integer bikeId = rent.getBikeId();
-        MapEntity mapEntity = getMap(mapId);
-
         if (rent == null) {
             throw new NotFoundException();
         }
+
+        Integer bikeId = rent.getBikeId();
+        if (bikeId == null) return rent;
+
+        MapEntity mapEntity = getMap(mapId);
+
+        if (mapEntity == null) return rent;
+
 
         try {
             beginTx();
