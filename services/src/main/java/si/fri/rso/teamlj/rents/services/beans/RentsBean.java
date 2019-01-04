@@ -153,11 +153,17 @@ public class RentsBean {
 
         Bike bike = getBike(bikeId);
 
+        log.warning("GET BIKE CALLED, BIKE ID: " + bikeId);
+
         if (bike.getStatus().equals("taken")) {
             return null;
         }
 
+        log.warning("GET BIKE STATUS CALLED, BIKE STATUS: " + bike.getStatus());
+
         BikeRent rent = createRent(new BikeRent());
+
+        log.warning("CREATE RENT CALLED, RENT ID: " + rent.getId());
 
         try {
             beginTx();
@@ -169,11 +175,16 @@ public class RentsBean {
             rent.setBikeId(bikeId);
 
             commitTx();
+
+            log.warning("COMMIT OK : " + rent.getId());
+
         } catch (Exception e) {
             rollbackTx();
         }
 
         takeBike(bikeId);
+
+        log.warning("BIKE TAKEN CALLED");
 
         return rent;
     }
@@ -220,6 +231,8 @@ public class RentsBean {
             throw new InternalServerErrorException(e);
         }
 
+
+        log.warning("BIKE TAKEN PATCH CALLED");
     }
 
     public BikeRent returnBike(Integer userId, Integer rentId, Integer mapId) {
