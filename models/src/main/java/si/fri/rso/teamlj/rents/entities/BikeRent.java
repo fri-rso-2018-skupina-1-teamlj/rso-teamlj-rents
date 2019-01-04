@@ -11,7 +11,7 @@ import java.util.List;
         {
                 @NamedQuery(name = "BikeRent.getAll", query = "SELECT r FROM rents r"),
                 @NamedQuery(name = "BikeRent.findByUser", query = "SELECT r FROM rents r WHERE r.userId = " +
-                        ":userId")
+                        ":userId") //currently not used
         })
 public class BikeRent {
 
