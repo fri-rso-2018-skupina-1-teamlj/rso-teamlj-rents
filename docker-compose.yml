@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: rent
   rso-rents:
-    image: jp8874/rso-teamlj-rents:2.4
+    image: jp8874/rso-teamlj-rents:2.5
     ports:
     - 8081:8081
     environment:

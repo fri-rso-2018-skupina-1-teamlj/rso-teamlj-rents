@@ -66,7 +66,7 @@ public class RentsBean {
     @Timed(name = "get_rents_timed")
     @Counted(name = "get_rents_counter")
     @CircuitBreaker(requestVolumeThreshold = 3)
-    @Timeout(value = 2, unit = ChronoUnit.SECONDS)
+    @Timeout(value = 5, unit = ChronoUnit.SECONDS)
     @Fallback(fallbackMethod = "getRentsFallback")
     public List<BikeRent> getRents(UriInfo uriInfo) {
 
@@ -88,7 +88,7 @@ public class RentsBean {
     @Timed(name = "get_rent_timed")
     @Counted(name = "get_rent_counter")
     @CircuitBreaker(requestVolumeThreshold = 3)
-    @Timeout(value = 2, unit = ChronoUnit.SECONDS)
+    @Timeout(value = 5, unit = ChronoUnit.SECONDS)
     @Fallback(fallbackMethod = "getRentFallback")
     public BikeRent getRent(Integer rentId) {
 
@@ -283,7 +283,6 @@ public class RentsBean {
 
         try {
             httpClient
-                    //TODO
                     .target(baseUrl.get() + "/v1/bikes/" + bike.getId() + "/free/" + latitude + "&" + longitude)
 //                    .target("http://localhost:8082/v1/bikes/" + bike.getId() + "/free/" + latitude + "&" + longitude)
                     .request()
