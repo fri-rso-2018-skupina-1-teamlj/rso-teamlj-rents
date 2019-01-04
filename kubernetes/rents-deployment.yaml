@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: rents
-        image: jp8874/rso-teamlj-rents:2.1
+        image: jp8874/rso-teamlj-rents:2.2
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER
             value: gcloud
@@ -24,3 +24,9 @@ spec:
         - containerPort: 8081
           name: server
           protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: server
+          initialDelaySeconds: 20
+          periodSeconds: 3
