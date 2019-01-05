@@ -257,8 +257,8 @@ public class RentsBean {
              *  posodobimo novo lokacijo kolesa
              */
             rent.setDateOfReturn(Instant.now());
-            rent.setLongitudeOfReturn(mapEntity.getLatitude());
-            rent.setLatitudeOfReturn(mapEntity.getLongitude());
+            rent.setLatitudeOfReturn(mapEntity.getLatitude());
+            rent.setLongitudeOfReturn(mapEntity.getLongitude());
 
             em.merge(rent);
             commitTx();
