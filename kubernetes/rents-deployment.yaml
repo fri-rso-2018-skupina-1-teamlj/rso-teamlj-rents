@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: rents
-        image: jp8874/rso-teamlj-rents:2.6
+        image: jp8874/rso-teamlj-rents:2.7
         env:
           - name: KUMULUZEE_DISCOVERY_CLUSTER
             value: gcloud

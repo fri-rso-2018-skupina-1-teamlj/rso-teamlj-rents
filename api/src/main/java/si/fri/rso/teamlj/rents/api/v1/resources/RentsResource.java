@@ -104,7 +104,7 @@ public class RentsResource {
 
     @PUT
     @Path("/returnabike/{userId}/{rentId}/{mapId}")
-    public Response returnBike(@PathParam("userId") Integer userId, @PathParam("rentId") Integer rentId, @PathParam("rentId") Integer mapId) {
+    public Response returnBike(@PathParam("userId") Integer userId, @PathParam("rentId") Integer rentId, @PathParam("mapId") Integer mapId) {
 
         BikeRent rent = rentsBean.returnBike(userId, rentId, mapId);
 
